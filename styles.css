@@ -1,0 +1,64 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f8ff; /* Color de fondo claro */
+    color: #333; /* Color del texto */
+    margin: 0;
+    padding: 20px;
+}
+
+h1, h2 {
+    color: #007BFF; /* Color azul */
+}
+
+form {
+    background-color: #ffffff; /* Fondo blanco para el formulario */
+    border-radius: 8px; /* Bordes redondeados */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+input[type="text"], input[type="number"], select {
+    width: calc(100% - 22px); /* Ancho completo menos padding */
+    padding: 10px;
+    border: 1px solid #007BFF; /* Bordes azules */
+    border-radius: 4px; /* Bordes redondeados */
+    margin-bottom: 10px; /* Espacio entre inputs */
+}
+
+input[type="submit"] {
+    background-color: #007BFF; /* Botón azul */
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+input[type="submit"]:hover {
+    background-color: #0056b3; /* Azul más oscuro al pasar el mouse */
+}
+
+input[type="radio"] {
+    margin-right: 5px; /* Espacio entre el radio y el texto */
+}
+
+.radio-group {
+    display: flex;
+    justify-content: space-between; /* Distribuir los radios horizontalmente */
+    margin-bottom: 15px; /* Espacio entre grupos */
+}
+
+#resultado {
+    background-color: #e9f5ff; /* Fondo azul claro para resultados */
+    border: 1px solid #007BFF; /* Borde azul */
+    border-radius: 4px; /* Bordes redondeados */
+    padding: 15px;
+}
+
+canvas {
+    margin-top: 20px; /* Espacio entre el resultado y la gráfica */
+    border: 1px solid #007BFF; /* Borde azul para el canvas */
+    border-radius: 4px; /* Bordes redondeados */
+}
