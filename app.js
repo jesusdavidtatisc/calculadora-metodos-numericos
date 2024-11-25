@@ -156,13 +156,17 @@ function calcularSimpson13(e) {
 
 // Método Simpson 3/8
 function calcularSimpson38(e) {
+    e.preventDefault(); // Previene el comportamiento predeterminado del formulario si se usa dentro de uno
+
+    // Obtén los valores de los inputs
     const funcion = document.getElementById('funcion').value;
     const a = math.evaluate(document.getElementById('a').value);
     const b = math.evaluate(document.getElementById('b').value);
     const n = parseInt(document.getElementById('n').value);
 
-    if (n % 3 !== 0) {
-        alert('El número de subintervalos (n) debe ser múltiplo de 3 para Simpson 3/8.');
+    // Validaciones iniciales
+    if (isNaN(a) || isNaN(b)) {
+        alert('Por favor, introduce valores válidos para los extremos del intervalo (a y b).');
         return;
     }
 
@@ -171,9 +175,28 @@ function calcularSimpson38(e) {
         return;
     }
 
-    const f = math.compile(funcion);
+    if (n % 3 !== 0) {
+        alert('El número de subintervalos (n) debe ser múltiplo de 3 para Simpson 3/8.');
+        return;
+    }
+
+    // Compila y valida la función ingresada
+    let f;
+    try {
+        f = math.compile(funcion);
+        f.evaluate({ x: a }); // Prueba una evaluación inicial
+    } catch (error) {
+        alert('La función ingresada no es válida. Verifica su sintaxis.');
+        return;
+    }
+
+    // Calcula el paso h
     const h = (b - a) / n;
+
+    // Variables para el cálculo
     let suma = 0;
+    const puntosX = [];
+    const puntosY = [];
     let pasos = `<h2>Proceso del Método Simpson 3/8</h2>`;
     pasos += `<p><strong>Función:</strong> f(x) = ${funcion}</p>`;
     pasos += `<p><strong>Intervalo:</strong> [${a}, ${b}]</p>`;
@@ -181,27 +204,33 @@ function calcularSimpson38(e) {
     pasos += `<p><strong>Valor de h:</strong> h = (${b} - ${a}) / ${n} = ${h}</p>`;
     pasos += `<p><strong>Puntos evaluados:</strong></p><ul>`;
 
-    const puntosX = [];
-    const puntosY = [];
-
+    // Calcula los puntos evaluados y la suma
     for (let i = 0; i <= n; i++) {
         const x = a + i * h;
         const fx = f.evaluate({ x });
         puntosX.push(x);
         puntosY.push(fx);
+
+        // Suma con coeficientes según Simpson 3/8
         suma += (i === 0 || i === n) ? fx : (i % 3 === 0 ? 2 * fx : 3 * fx);
-        pasos += `<li>f(${x}) = ${fx} (${(i === 0 || i === n) ? 'extremos' : (i % 3 === 0 ? 'multiplicado por 2' : 'multiplicado por 3')})</li>`;
+
+        // Desglose en los pasos
+        pasos += `<li>f(${x.toFixed(4)}) = ${fx.toFixed(10)} (${(i === 0 || i === n) ? 'extremos' : (i % 3 === 0 ? 'multiplicado por 2' : 'multiplicado por 3')})</li>`;
     }
 
     pasos += `</ul>`;
-    const resultado = (3 * h / 8) * suma;
-    pasos += `<p><strong>Resultado aproximado:</strong> ${resultado.toFixed(10)}</p>`; // 10 decimales
 
+    // Calcula el resultado final
+    const resultado = (3 * h / 8) * suma;
+    pasos += `<p><strong>Resultado aproximado:</strong> ${resultado.toFixed(10)}</p>`;
+
+    // Muestra el proceso y resultado en el DOM
     document.getElementById('resultado').innerHTML = pasos;
 
     // Generar la gráfica
     mostrarGrafica(puntosX, puntosY, funcion, 'Gráfica del Método Simpson 3/8');
 }
+
 
 // Método Simpson Abierto
 function calcularSimpsonAbierto(e) {
@@ -317,3 +346,12 @@ function mostrarGrafica(puntosX, puntosY, funcion, titulo) {
         }
     });
 }
+
+math.import({
+    ln: function (x) {
+        if (x <= 0) {
+            throw new Error("ln(x) no está definido para valores menores o iguales a 0.");
+        }
+        return Math.log(x);
+    }
+});
